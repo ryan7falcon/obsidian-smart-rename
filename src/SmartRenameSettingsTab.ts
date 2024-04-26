@@ -17,7 +17,7 @@ export default class SmartRenameSettingsTab extends PluginSettingTab {
   public display(): void {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Smart Rename" });
+    containerEl.createEl("h2", { text: "Smart Rename API" });
 
     new Setting(containerEl)
       .setName("Invalid characters action")

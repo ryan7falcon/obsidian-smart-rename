@@ -78,8 +78,8 @@ export default class SmartRenamePlugin extends Plugin {
     await this.loadSettings();
 
     this.addCommand({
-      id: "smart-rename",
-      name: "Smart Rename",
+      id: "smart-rename-api",
+      name: "Smart Rename API",
       checkCallback: (checking: boolean): boolean => {
         const activeFile = this.app.workspace.getActiveFile();
         if (!activeFile) {

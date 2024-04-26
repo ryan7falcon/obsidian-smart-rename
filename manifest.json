@@ -1,6 +1,6 @@
 {
   "id": "smart-rename-api",
-  "name": "Smart Rename",
+  "name": "Smart Rename API",
   "version": "1.1.2",
   "minAppVersion": "1.1.0",
   "description": "Renames notes keeping previous title in existing links",
