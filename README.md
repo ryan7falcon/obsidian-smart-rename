@@ -95,7 +95,7 @@ const title = tp.file.title;
 const date = tp.date.now("YYYYMMDDHHmmss");
 const newTitle = `${date} ${title}`
 tp.hooks.on_all_templates_executed(async() => {
-	await app.plugins.plugins["smart-rename"].api.smartRename(tp.file.find_tfile(tp.file.path(true)))( newTitle)
+	await app.plugins.plugins["smart-rename-api"].api.smartRename(tp.file.find_tfile(tp.file.path(true)))( newTitle)
 
 	const file = tp.file.find_tfile(newTitle);
 
