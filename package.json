@@ -1,7 +1,7 @@
 {
   "name": "smart-rename-api",
   "version": "1.1.2",
-  "description": "Renames notes keeping previous title in existing links",
+  "description": "Renames notes keeping previous title in existing links, exposes API to do it programmatically",
   "scripts": {
     "build": "tsc --build && tsx esbuild.config.ts production",
     "dev": "tsc --build && tsx esbuild.config.ts",

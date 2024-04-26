@@ -3,7 +3,7 @@
   "name": "Smart Rename API",
   "version": "1.1.2",
   "minAppVersion": "1.1.0",
-  "description": "Renames notes keeping previous title in existing links",
+  "description": "Renames notes keeping previous title in existing links, exposes API to do it programmatically",
   "author": "mnaoumov,ryan7falcon",
   "authorUrl": "https://github.com/mnaoumov,https://github.com/ryan7falcon",
   "isDesktopOnly": false
