@@ -65,7 +65,7 @@ Current plugin's aim is to preserve `OldName` display text in links 1, 2, 4
 - Navigate to the plugin directory.
 
 ```
-cd obsidian-sample-plugin
+cd obsidian-smart-rename-api
 ```
 
 - Install dependencies.
