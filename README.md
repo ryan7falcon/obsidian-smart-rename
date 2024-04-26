@@ -81,7 +81,7 @@ npm install
 npm run build
 ```
 
-- copy the contents of `dist/build` folder to `{YOUR_VAULT_PATH}/.obsidian/plugins/obsidian-smart-rename-api`
+- Copy the contents of `dist/build` folder to `{YOUR_VAULT_PATH}/.obsidian/plugins/obsidian-smart-rename-api`
 - In Obsidian go to `Settings -> Community Plugins` and click `Reload Plugins` button next to `Installed Plugins`. Then enable it.
 
 ## Example Usage
