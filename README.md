@@ -5,7 +5,9 @@ This is a fork of a [Smart Rename plugin](https://github.com/mnaoumov/obsidian-s
 1. Adds the previous title as an alias to the renamed note
 2. Preserves the backlinks to the renamed note that were using previous title as a display text.
 
-In addition to the orginal functionality it exposes API that allows to call a function to perform Smart Renaming programmatically. See example below.  
+In addition to the orginal functionality it exposes API that allows to call a function to perform Smart Renaming programmatically. See example below.
+
+The motivation for creating this fork for me was the use case of having existing links to non-existing files. When a critical mass of those links tells me I should create the file, I want to do it with my template and rename the file to include a timestamp (I use Zettelkasten), but preserve the old name as an alias, and in all the existing links I want to use it as a display text to not pollute links' texts with timestamps.
 
 ## Detailed explanation
 
