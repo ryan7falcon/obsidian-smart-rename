@@ -5,7 +5,7 @@ This is a fork of a [Smart Rename plugin](https://github.com/mnaoumov/obsidian-s
 1. Adds the previous title as an alias to the renamed note
 2. Preserves the backlinks to the renamed note that were using previous title as a display text.
 
-In addition to the orginal functionality it exposes API that allows to call a function to perform smart renaming programmatically. See example below.  
+In addition to the orginal functionality it exposes API that allows to call a function to perform Smart Renaming programmatically. See example below.  
 
 ## Detailed explanation
 
@@ -74,7 +74,7 @@ cd obsidian-smart-rename-api
 npm install
 ```
 
-Compile the source code. 
+- Compile the source code. 
 
 ```
 npm run build
