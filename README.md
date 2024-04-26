@@ -61,6 +61,7 @@ Current plugin's aim is to preserve `OldName` display text in links 1, 2, 4
 ## Installation
 
 - `Smart Rename API` needs to be installed from source.
+- Prerequesite: [Node.js](https://nodejs.org/en/)
 - Download the code
 - Navigate to the plugin directory.
 
