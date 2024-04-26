@@ -9,51 +9,9 @@ import {
   CachedMetadata
 } from "obsidian";
 import prompt from "./prompt.ts";
-import { InvalidCharacterAction } from "./InvalidCharacterAction.ts";
+// import { InvalidCharacterAction } from "./InvalidCharacterAction.ts";
 
-const smartRenameFunc = (that) => (tFile) => async(newName) => {
-  that.currentNoteFile = tFile;
-  that.oldTitle = that.currentNoteFile.basename;
-  that.newTitle = newName
-  let titleToStore = that.newTitle;
-  if (that.hasInvalidCharacters(that.newTitle)) {
-    switch (that.settings.invalidCharacterAction) {
-      case "Error" /* Error */:
-        new Notice("The new title has invalid characters");
-        return;
-      case "Remove" /* Remove */:
-        that.newTitle = that.replaceInvalidCharacters(that.newTitle, "");
-        break;
-      case "Replace" /* Replace */:
-        that.newTitle = that.replaceInvalidCharacters(that.newTitle, that.settings.replacementCharacter);
-        break;
-    }
-  }
-  if (!that.settings.shouldStoreInvalidTitle) {
-    titleToStore = that.newTitle;
-  }
-  if (titleToStore && that.settings.shouldStoreInvalidTitle && titleToStore !== that.newTitle) {
-    await that.addAlias(titleToStore);
-  }
-  if (titleToStore && that.settings.shouldUpdateTitleKey) {
-    await that.app.fileManager.processFrontMatter(that.currentNoteFile, (frontMatter) => {
-      frontMatter.title = titleToStore;
-    });
-  }
-  if (titleToStore && that.settings.shouldUpdateFirstHeader) {
-    await that.app.vault.process(that.currentNoteFile, (content) => content.replace(/^((---\n(.|\n)+?---\n)?(.|\n)*\n)# .+/, `$1# ${titleToStore}`));
-  }
-  that.newPath = `${that.currentNoteFile.parent.path}/${that.newTitle}.md`;
-  const validationError = await that.getValidationError();
-  if (validationError) {
-    new Notice(validationError);
-    return;
-  }
-  that.prepareBacklinksToFix();
-  await that.addAlias(that.oldTitle);
-  await that.app.fileManager.renameFile(that.currentNoteFile, that.newPath);
-  that.isReadyToFixBacklinks = true;
-}
+
 
 export default class SmartRenamePlugin extends Plugin {
   private systemForbiddenCharactersRegExp!: RegExp;
@@ -65,7 +23,56 @@ export default class SmartRenamePlugin extends Plugin {
   private readonly backlinksToFix: Map<string, Set<number>> = new Map<string, Set<number>>();
   private isReadyToFixBacklinks!: boolean;
   public settings!: SmartRenameSettings;
-  public api = { smartRename: smartRenameFunc(this)};
+  public api = { smartRename: this.smartRenameFunc.bind(this)};
+  
+  public hasInvalidCharacters(str: string): boolean {
+    return this.systemForbiddenCharactersRegExp.test(str) || this.obsidianForbiddenCharactersRegExp.test(str);
+  }
+
+  private smartRenameFunc(tFile: TFile){ return async(newName: string) => {
+    this.currentNoteFile = tFile;
+    this.oldTitle = this.currentNoteFile.basename;
+    this.newTitle = newName
+    let titleToStore = this.newTitle;
+    if (this.hasInvalidCharacters(this.newTitle)) {
+      switch (this.settings.invalidCharacterAction) {
+        case "Error" /* Error */:
+          new Notice("The new title has invalid characters");
+          return;
+        case "Remove" /* Remove */:
+          this.newTitle = this.replaceInvalidCharacters(this.newTitle, "");
+          break;
+        case "Replace" /* Replace */:
+          this.newTitle = this.replaceInvalidCharacters(this.newTitle, this.settings.replacementCharacter);
+          break;
+      }
+    }
+    if (!this.settings.shouldStoreInvalidTitle) {
+      titleToStore = this.newTitle;
+    }
+    if (titleToStore && this.settings.shouldStoreInvalidTitle && titleToStore !== this.newTitle) {
+      await this.addAlias(titleToStore);
+    }
+    if (titleToStore && this.settings.shouldUpdateTitleKey) {
+      await this.app.fileManager.processFrontMatter(this.currentNoteFile, (frontMatter: any) => {
+        frontMatter.title = titleToStore;
+      });
+    }
+    if (titleToStore && this.settings.shouldUpdateFirstHeader) {
+      await this.app.vault.process(this.currentNoteFile, (content: string) => content.replace(/^((---\n(.|\n)+?---\n)?(.|\n)*\n)# .+/, `$1# ${titleToStore}`));
+    }
+    this.newPath = `${this.currentNoteFile?.parent?.path}/${this.newTitle}.md`;
+    const validationError = await this.getValidationError();
+    if (validationError) {
+      new Notice(validationError);
+      return;
+    }
+    this.prepareBacklinksToFix();
+    await this.addAlias(this.oldTitle);
+    await this.app.fileManager.renameFile(this.currentNoteFile, this.newPath);
+    this.isReadyToFixBacklinks = true;
+  }}
+
 
   public override async onload(): Promise<void> {
     await this.loadSettings();
@@ -93,8 +100,10 @@ export default class SmartRenamePlugin extends Plugin {
 
     this.registerEvent(this.app.metadataCache.on("resolved", this.fixModifiedBacklinks.bind(this)));
   }
+
+
   private async smartRename(activeFile: TFile): Promise<void> {
-    smartRenameFunc(this)(activeFile)(await prompt(this.app, "Enter new title"))
+    this.smartRenameFunc(activeFile)(await prompt(this.app, "Enter new title"))
     }
 
   private async getValidationError(): Promise<string | null> {
@@ -231,9 +240,7 @@ export default class SmartRenamePlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  public hasInvalidCharacters(str: string): boolean {
-    return this.systemForbiddenCharactersRegExp.test(str) || this.obsidianForbiddenCharactersRegExp.test(str);
-  }
+ 
 
   private replaceInvalidCharacters(str: string, replacement: string): string {
     return str.replace(this.systemForbiddenCharactersRegExp, replacement).replace(this.obsidianForbiddenCharactersRegExp, replacement);
