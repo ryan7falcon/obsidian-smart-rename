@@ -123,6 +123,7 @@ _%>
 ```
 
 - Click on the link to create that note
+- **PRESS ENTER** (this is very important, so that the file is not totally empty when templater runs, otherwise it doesnt run correctly for some reason)
 - In that new note run templater command `Templater: Open Insert Template modal` and select your template
 - The `New Note` note should now be renamed with a timestamp and the link to it updated so that display text didnt change.
 
