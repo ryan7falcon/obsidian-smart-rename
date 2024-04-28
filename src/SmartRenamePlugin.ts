@@ -103,7 +103,7 @@ export default class SmartRenamePlugin extends Plugin {
 
 
   private async smartRename(activeFile: TFile): Promise<void> {
-    this.smartRenameFunc(activeFile)(await prompt(this.app, "Enter new title"))
+    return this.smartRenameFunc(activeFile)(await prompt(this.app, "Enter new title"))
     }
 
   private async getValidationError(): Promise<string | null> {
